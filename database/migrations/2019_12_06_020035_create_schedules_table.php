@@ -15,6 +15,15 @@ class CreateSchedulesTable extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->date('activity_date');
+            $table->time('entry_time');
+            $table->time('departure_time');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->time('transportation_entry_time');
+            $table->time('transportation_departure_time');
+            $table->unsignedBigInteger('activity_id');
+            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
             $table->timestamps();
         });
     }

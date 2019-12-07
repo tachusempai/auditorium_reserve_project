@@ -15,6 +15,15 @@ class CreateActivitiesTable extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('request_id');
+            $table->foreign('request_id')->references('id')->on('requests')->onDelete('cascade');
+            $table->text('name_activity');
+            $table->unsignedInteger('number_people');
+            $table->text('information');
+            $table->text('objective');
+            $table->text('artistic_description');
+            $table->text('security_reason');
+            $table->tinyInteger('open_public');
             $table->timestamps();
         });
     }

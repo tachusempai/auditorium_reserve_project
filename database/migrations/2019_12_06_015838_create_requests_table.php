@@ -16,7 +16,7 @@ class CreateRequestsTable extends Migration
         Schema::create('requests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('date_request');
-            $table->unsignedInteger('type_request_id');
+            $table->unsignedBigInteger('type_request_id');
             $table->foreign('type_request_id')->references('id')->on('type_requests')->onDelete('cascade');
             $table->timestamps();
         });
