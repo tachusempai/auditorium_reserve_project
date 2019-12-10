@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Request;
+/* use Illuminate\Http\Request; */
 
 class RequestController extends Controller
 {
@@ -13,7 +14,10 @@ class RequestController extends Controller
      */
     public function index()
     {
-        //
+        $last = \DB::table('requests')->count() + 1;
+        return view('reservation.index', [
+            'lastRequest' => $last
+        ]);
     }
 
     /**
@@ -34,7 +38,18 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = Request::all();
+        dd($input);
+        /* dd(request) */
+        /* $var1 = $this->addPriceDetails1($request->form1);
+
+        $var2 = $this->addProductDetails1($request->form2);
+        $var3 = $this->addAdditionalInformation1($request->form3); */
+            //$var4 = $this->addImages($imagesform);//you dont't have
+        /* $imagesform */
+        return response()->json(["response"=>"success"]);
+        /* $input = Request::all();
+        dd($input); */
     }
 
     /**
