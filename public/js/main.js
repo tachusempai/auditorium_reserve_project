@@ -1,4 +1,4 @@
-function veriTransporte() {
+  function veriTransporte() {
     if ($('#pr4').is(":checked")) {
         $('#previo').show();
         $('#despues').hide();
@@ -19,21 +19,142 @@ function veriTransporte() {
 }
 
 function addPerson(){
+    $("#alertPerson").attr("hidden",true);
     var name = $('#inname').val();
     var lastname = $('#inlastname').val();
     var injob = $('#injob').val();
-    var code = name + lastname + injob;
-    $('#tablePerson').append(
-        "<tr>"
-            + "<td>" + name + "</td>"
-            + "<td>" + lastname + "</td>"
-            + "<td>" + injob + "</td>"
-            + "<td> <button type='button' class='btn btn-dark'>Eliminar</button> </td>" +
-        "</tr>"
-    );
-    $('#inname').val('');
-    $('#inlastname').val('');
-    $('#injob').val('');
+    if (name != '' && lastname != '' && injob != ''){
+        $('#tablePerson').append(
+            "<tr>"
+                + "<td>" + name + "</td>"
+                + "<td>" + lastname + "</td>"
+                + "<td>" + injob + "</td>"
+                + "<td> <button type='button' class='btn btn-dark'>Eliminar</button> </td>" +
+            "</tr>"
+        );
+        $('#inname').val('');
+        $('#inlastname').val('');
+        $('#injob').val('');
+    } else{
+        $("#alertPerson").attr("hidden",false);
+    }
+
+}
+
+function addSchedule(){
+    $("#alertSchedule").attr("hidden",true);
+    var _fecha = $('#_fecha').val();
+    var _horaIng = $('#_horaIng').val();
+    var _horaSal = $('#_horaSal').val();
+    var _horaIni = $('#_horaIni').val();
+    var _horaFin = $('#_horaFin').val();
+    var _opcionSeguridad = $('#formHorario input[name=pregunta4]:checked').val();
+    console.log(_opcionSeguridad);
+    if (_fecha != '' && _horaIng != '' && _horaSal != '' && _horaIni != '' && _horaFin != '' && _opcionSeguridad != undefined){
+        if(_opcionSeguridad == '_no'){
+            $('#tableSchedule').append(
+                "<tr>"
+                    + "<td>" + _fecha + "</td>"
+                    + "<td>" + _horaIng + "</td>"
+                    + "<td>" + _horaSal + "</td>"
+                    + "<td>" + _horaIni + "</td>"
+                    + "<td>" + _horaFin + "</td>"
+                    + "<td>" + "N/A" + "</td>"
+                    + "<td>" + "N/A" + "</td>"
+                    + "<td> <button type='button' class='btn btn-dark'>Eliminar</button> </td>" +
+                "</tr>"
+            );
+        } else {
+            if(_opcionSeguridad == '_previamente'){
+                var _previamente = $('#_horaIngTrans').val();
+                $('#tableSchedule').append(
+                    "<tr>"
+                         + "<td>" + _fecha + "</td>"
+                        + "<td>" + _horaIng + "</td>"
+                        + "<td>" + _horaSal + "</td>"
+                        + "<td>" + _horaIni + "</td>"
+                        + "<td>" + _horaFin + "</td>"
+                        + "<td>" + _previamente + "</td>"
+                        + "<td>" + "N/A" + "</td>"
+                        + "<td> <button type='button' class='btn btn-dark'>Eliminar</button> </td>" +
+                    "</tr>"
+                );
+            } else {
+                if(_opcionSeguridad == '_despues'){
+                    var _despues = $('#_horaSalTrans').val();
+                    $('#tableSchedule').append(
+                        "<tr>"
+                             + "<td>" + _fecha + "</td>"
+                            + "<td>" + _horaIng + "</td>"
+                            + "<td>" + _horaSal + "</td>"
+                            + "<td>" + _horaIni + "</td>"
+                            + "<td>" + _horaFin + "</td>"
+                            + "<td>" + "N/A" + "</td>"
+                            + "<td>" + _despues + "</td>"
+                            + "<td> <button type='button' class='btn btn-dark'>Eliminar</button> </td>" +
+                        "</tr>"
+                    );
+                } else {
+                    if(_opcionSeguridad == '_ambas'){
+                        var _previamente = $('#_horaIngTrans').val();
+                        var _despues = $('#_horaSalTrans').val();
+                        $('#tableSchedule').append(
+                            "<tr>"
+                                 + "<td>" + _fecha + "</td>"
+                                + "<td>" + _horaIng + "</td>"
+                                + "<td>" + _horaSal + "</td>"
+                                + "<td>" + _horaIni + "</td>"
+                                + "<td>" + _horaFin + "</td>"
+                                + "<td>" + _previamente + "</td>"
+                                + "<td>" + _despues + "</td>"
+                                + "<td> <button type='button' class='btn btn-dark'>Eliminar</button> </td>" +
+                            "</tr>"
+                        );
+                    }
+                }
+            }
+        }
+        $('#_fecha').val('');
+        $('#_horaIng').val('');
+        $('#_horaSal').val('');
+        $('#_horaIni').val('');
+        $('#_horaFin').val('');
+        $('#formHorario input[name=pregunta4]').prop('checked', false);
+        $('#despues').hide();
+        $('#previo').hide();
+    } else{
+        $("#alertSchedule").attr("hidden",false);
+    }
+
+}
+var schedule = [];
+function getTableSchedule(){
+    let arrayGeneral = [];
+    let horario = [];
+    $('#tablaHorarios > table > tbody > tr').each(function() {
+        horario = [];
+        $(this).children('td').each(function(){
+          horario.push($(this).html());
+        })
+        arrayGeneral.push(horario);
+      });
+      console.log(arrayGeneral);
+      schedule = arrayGeneral;
+}
+
+var securityPeople = [];
+function getTableSecurityPeople(){
+    let arrayGeneral = [];
+    let people = [];
+    $('#tablaPersonas > table > tbody > tr').each(function() {
+        people = [];
+        $(this).children('td').each(function(){
+            people.push($(this).html());
+        })
+        arrayGeneral.push(people);
+      });
+      console.log(arrayGeneral);
+      securityPeople = arrayGeneral;
 }
 
 function eliminar(code){
@@ -52,7 +173,7 @@ function veri() {
 var prueba;
 
 function loaded(event) {
-
+    $('#successfulMsg').hide();
     $('#tipAc').hide();
     $('#formularioReserva').hide();
     $('#_datosResponsable').hide();
@@ -75,6 +196,10 @@ function aceptaTerminos() {
     if ($('#invalidCheck').is(":checked")) {
         $('#cua').hide();
         $('#tipAc').show();
+        $('#_horaIng').val('');
+        $('#_horaSal').val('');
+        $('#_horaIni').val('');
+        $('#_horaFin').val('');
     } else {
         $('#terminos').addClass("was-validated");
     }
@@ -127,15 +252,25 @@ function atrasHorario() {
 }
 
 function siguienteHorario() {
-    validaHorario();
-    if (prueba != 1) {
-        quitaValidacionActividad();
-        $('#_horarioActividad').hide();
-        $('#_detallesActividad').show();
-        $('#_btnSiguienteHorario').hide();
-        $('#_btnAtrasHorario').hide();
-        $('#_btnSiguienteActividad').show();
-        $('#_btnAtrasActividad').show();
+    getTableSchedule();
+    if (schedule.length != 0){
+        $('#pr4').prop('required',false);
+        $('#pr4-1').prop('required',false);
+        $('#pr4-2').prop('required',false);
+        $('#pr4-3').prop('required',false);
+        validaHorario();
+        if (prueba != 1) {
+            quitaValidacionActividad();
+            $('#_horarioActividad').hide();
+            $('#_detallesActividad').show();
+            $('#_btnSiguienteHorario').hide();
+            $('#_btnAtrasHorario').hide();
+            $('#_btnSiguienteActividad').show();
+            $('#_btnAtrasActividad').show();
+        }
+    }
+    else {
+        alert ('favor agregar al menos un horario');
     }
 }
 
@@ -175,22 +310,36 @@ function atrasSeguridad() {
 
 
 function siguienteSeguridad() {
-    validaSeguridad();
-    if (prueba != 1) {
-        quitaValidacionSeguridad();
-        $('#_detallesActividad').hide();
-        $('#_detallesSeguridad').show();
-        $('#_btnSiguienteActividad').hide();
-        $('#_btnAtrasActividad').hide();
-        $('#_btnSiguienteSeguridad').show();
-        $('#_btnAtrasSeguridad').show();
-        submitTotal();
+    getTableSecurityPeople();
+    var _participaSeguridad =  $('input[name=pregunta1]:checked').val();
+    if ((securityPeople.length !=0 && _participaSeguridad == 'si') || _participaSeguridad == 'no'){
+        if (_participaSeguridad == 'no'){
+            securityPeople = null;
+        }
+        validaSeguridad();
+        if (prueba != 1) {
+            quitaValidacionSeguridad();
+            $('#_detallesActividad').hide();
+            $('#_detallesSeguridad').show();
+            $('#_btnSiguienteActividad').hide();
+            $('#_btnAtrasActividad').hide();
+            $('#_btnSiguienteSeguridad').show();
+            $('#_btnAtrasSeguridad').show();
+            submitTotal();
+        }
     }
+    else {
+        alert ('favor agregar al menos una persona si requiere seguridad');
+    }
+
+
 }
 
 function fetchFormTipo() {
     var tipoActividad = $('#tiposA input[name=_tipoActividad]:checked').val();
+    var numeroSolicitud = $('#_numeroSolicitud').text();
     return form1 = {
+        numeroSolicitud: numeroSolicitud,
         tipoActividad: tipoActividad
     }
 }
@@ -217,18 +366,9 @@ function fetchFormResponsable() {
 }
 
 function fetchFormHorario() {
-    var _fecha = $('#_fecha').val();
-    var _horaIng = $('#_horaIng').val();
-    var _horaSal = $('#_horaSal').val();
-    var _horaIni = $('#_horaIni').val();
-    var _horaFin = $('#_horaFin').val();
     var _areaExtra = $('#_areaExtra').val();
     return form3 = {
-        _fecha: _fecha,
-        _horaIng: _horaIng,
-        _horaSal: _horaSal,
-        _horaIni: _horaIni,
-        _horaFin: _horaFin,
+        _horarios: schedule,
         _areaExtra: _areaExtra
     }
 }
@@ -249,12 +389,24 @@ function fetchFormActividad() {
     }
 }
 
+function fetchFormSeguridad(){
+    var _atencionEspecial = $('input[name=pregunta2]:checked').val();
+    var _abiertaPublico = $('input[name=pregunta3]:checked').val();
+    return form5 = {
+        _personasSeguridad: securityPeople,
+        _atencionEspecial: _atencionEspecial,
+        _abiertaPublico: _abiertaPublico
+    }
+
+
+}
+
 function submitTotal() {
     var formTipo = fetchFormTipo();
     var formResponsable = fetchFormResponsable();
     var formHorario = fetchFormHorario();
     var formActividad = fetchFormActividad();
-    var form5 = $('.formSeguridad').serialize();
+    var formSeguridad = fetchFormSeguridad();
     var token = $('#_token').text();
     $.ajax({
         url: '/reservation',
@@ -264,15 +416,22 @@ function submitTotal() {
             formResponsable: formResponsable,
             formHorario: formHorario,
             formActividad: formActividad,
-            form5: form5,
+            formSeguridad: formSeguridad,
             _token: token
         },
         dataType: 'json',
         success: function (data) {
-            alert(data);
-
+            //alert(data);
+            successful();
         }
     });
+}
+
+function successful() {
+    var numeroSolicitud = $('#_numeroSolicitud').text();
+    $('#successfulNumSol').text( numeroSolicitud);
+    $('#generalForm').remove();
+    $('#successfulMsg').show();
 }
 
 function quitaValidacionSeguridad() {

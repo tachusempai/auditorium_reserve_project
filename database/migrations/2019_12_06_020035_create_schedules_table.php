@@ -20,8 +20,8 @@ class CreateSchedulesTable extends Migration
             $table->time('departure_time');
             $table->time('start_time');
             $table->time('end_time');
-            $table->time('transportation_entry_time');
-            $table->time('transportation_departure_time');
+            $table->time('transportation_entry_time')->nullable();
+            $table->time('transportation_departure_time')->nullable();
             $table->unsignedBigInteger('activity_id');
             $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
             $table->timestamps();

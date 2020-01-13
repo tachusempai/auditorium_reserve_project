@@ -19,9 +19,9 @@ class CreateActivitiesTable extends Migration
             $table->foreign('request_id')->references('id')->on('requests')->onDelete('cascade');
             $table->text('name_activity');
             $table->unsignedInteger('number_people');
-            $table->text('information');
+            $table->text('information')->nullable();;
             $table->text('objective');
-            $table->text('artistic_description');
+            $table->text('artistic_description')->nullable();;
             $table->text('security_reason');
             $table->tinyInteger('open_public');
             $table->timestamps();

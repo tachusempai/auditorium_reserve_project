@@ -18,6 +18,8 @@ class CreateRequestsTable extends Migration
             $table->date('date_request');
             $table->unsignedBigInteger('type_request_id');
             $table->foreign('type_request_id')->references('id')->on('type_requests')->onDelete('cascade');
+            $table->unsignedBigInteger('state_request_id');
+            $table->foreign('state_request_id')->references('id')->on('state_requests')->onDelete('cascade');
             $table->timestamps();
         });
     }

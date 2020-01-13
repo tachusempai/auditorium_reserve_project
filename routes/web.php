@@ -16,3 +16,13 @@ Route::get('/', function () {
 });
 
 Route::resource('/reservation', 'RequestController');
+
+Route::resource('/activities', 'ActivityController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/calendar', function(){
+    return view('reservation.calendar');
+});

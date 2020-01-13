@@ -1,6 +1,7 @@
 @extends('layouts.base')
 
 @section('content')
+<div id="generalForm">
 <div class="row">
   <div class="col"></div><br><br>
 </div>
@@ -44,7 +45,7 @@
     </div>
   </div>
 </div>
-<!-- Tipo de uso del Auditorio-->
+<!-- Tipo de uso del Audvb itorio-->
 <div class="row justify-content-center" id="tipAc">
   <div class="col-lg-8 col-sm-12">
     <div class="card text-center">
@@ -52,9 +53,9 @@
         Formulario para el prestamo del Auditorio Clodomorio Picado Twight
       </div>
       <div class="card-body">
-        <h4 class="card-title">
-          Numero de solicitud: AUD- {{$lastRequest}}<span name="_numeroSolicitud"></span> Fecha de solicitud: <span
-            name="fechaSol"></span>
+        <h4 class="card-title">Numero de solicitud: AUD -
+          <span name="_numeroSolicitud" id="_numeroSolicitud"> {{$lastRequest}}</span> Fecha de solicitud: <span
+        name="fechaSol">{{date('d-m-Y')}}</span>
         </h4>
         <p class="h5 card-text">A continuacion se ofrecen tres modelos de uso </p>
         <div style="font-size:16px;" class="alert alert-warning">
@@ -66,20 +67,20 @@
           @csrf
           <div class="form-check form-check-inline">
             <div class="custom-control custom-radio">
-              <input class="form-check-input custom-control-input" type="radio" name="_tipoActividad" id="_interna" value="_interna"
+              <input class="form-check-input custom-control-input" type="radio" name="_tipoActividad" id="_interna" value="1"
                 required>
               <label class="h5 form-check-label custom-control-label" for="_interna"> Interna &nbsp;
               </label>
               <div class="invalid-tooltip">Favor ingresar el tipo de actividad</div>
             </div>
             <div class="custom-control custom-radio">
-              <input class="form-check-input custom-control-input" type="radio" name="_tipoActividad" id="_mixta" value="_mixta"
+              <input class="form-check-input custom-control-input" type="radio" name="_tipoActividad" id="_mixta" value="2"
                 required>
               <label class="h5 form-check-label custom-control-label" for="_mixta"> Mixta &nbsp;
               </label>
             </div>
             <div class="custom-control custom-radio">
-              <input class="form-check-input custom-control-input" type="radio" name="_tipoActividad" id="_externa" value="_externa"
+              <input class="form-check-input custom-control-input" type="radio" name="_tipoActividad" id="_externa" value="3"
                 required>
               <label class="h5 form-check-label custom-control-label" for="_externa"> Externa &nbsp;
               </label>
@@ -254,6 +255,112 @@
                 </div>
               </div>
             </div>
+
+
+
+            <div class="form-row">
+              <div> Segun el horario anterior descrito, necesita que ingrese previamente o despues de la actividad alguna unidad de transporte o de servicio de alimentacion? </div>
+              <div class="form-check form-check-inline">
+                <div class="custom-control custom-radio">
+                  <input class="form-check-input custom-control-input" type="radio" name="pregunta4" id="pr4" value="_previamente" required
+                    onclick="veriTransporte()">
+                  <label class="form-check-label custom-control-label" for="pr4"> Previamente de la actividad
+                  </label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input class="form-check-input custom-control-input" type="radio" name="pregunta4" id="pr4-1" value="_despues" required
+                    onclick="veriTransporte()">
+                  <label class="form-check-label custom-control-label" for="pr4-1"> Despues de la actividad
+                  </label>
+                  <div class="invalid-tooltip">Favor ingresar la respuesta</div>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input class="form-check-input custom-control-input" type="radio" name="pregunta4" id="pr4-2" value="_ambas" required
+                    onclick="veriTransporte()">
+                  <label class="form-check-label custom-control-label" for="pr4-2"> Ambas veces
+                  </label>
+                  <div class="invalid-tooltip">Favor ingresar la respuesta</div>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input class="form-check-input custom-control-input" type="radio" name="pregunta4" id="pr4-3" value="_no" required
+                    onclick="veriTransporte()">
+                  <label class="form-check-label custom-control-label" for="pr4-3"> No
+                  </label>
+                  <div class="invalid-tooltip">Favor ingresar la respuesta</div>
+                </div>
+
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col" id="previo">
+                <label for="horaIn">Hora previa de ingreso</label>
+                <div class="input-group date" id="datetimepicker6" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker6" id="_horaIngTrans"/>
+                    <div class="input-group-append" data-target="#datetimepicker6" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fas fa-clock"></i></div>
+                    </div>
+                </div>
+              </div>
+              <div class="form-group col" id="despues">
+                <label for="horaIn">Hora posterior de ingreso</label>
+                <div class="input-group date" id="datetimepicker7" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker7" id="_horaSalTrans"/>
+                    <div class="input-group-append" data-target="#datetimepicker7" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fas fa-clock"></i></div>
+                    </div>
+                </div>
+              </div>
+
+            </div>
+            <br>
+            <div class="row d-flex justify-content-center">
+                <div class="col d-flex justify-content-center">
+                    <button class="btn btn-info " type="button" id="guardarHorario" onclick="javascript:addSchedule();">Agregar horario</button>
+                </div>
+            </div>
+
+            <br>
+            <div class="row d-flex justify-content-center">
+                <div class="col d-flex justify-content-center">
+                    <div class="h2">
+                        Resumen del horario de la actividad
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="form-row" id="agregaHorarios">
+              <div class="table-responsive" id="tablaHorarios">
+                <table class="table tableSchedule" id="tableSchedule">
+                  <thead>
+                    <tr>
+                      <th scope="col">Fecha</th>
+                      <th scope="col">Hora ingreso</th>
+                      <th scope="col">Hora salida</th>
+                      <th scope="col">Hora inicio</th>
+                      <th scope="col">Hora final</th>
+                      <th scope="col">Transp Ingreso</th>
+                      <th scope="col">Transp Salida</th>
+                      <th scope="col">Eliminar</th>
+                    </tr>
+                  </thead>
+                  <tbody id="listadoHorario">
+
+                  </tbody>
+
+                </table>
+              </div>
+            </div>
+            <div class="row" id="alertSchedule" hidden>
+                <div class="col">
+                    <div class="alert alert-danger" role="alert">
+                        Favor llenar los datos antes de agregar
+                    </div>
+                </div>
+            </div>
+
+
             <div class="form-row">
               <div class="form-group col">
                 <label for="_areaExtra">Favor indique en este espacio si ocupa dias anteriores o posteriores al evento o si
@@ -363,13 +470,13 @@
                 autoridad de la Universidad Nacional, persona privada de libertad o que su vida este amenazada? </div>
               <div class="form-check form-check-inline">
                 <div class="custom-control custom-radio">
-                  <input class="form-check-input custom-control-input" type="radio" name="pregunta1" id="pr1" required
+                  <input class="form-check-input custom-control-input" type="radio" name="pregunta1" id="pr1" value="si" required
                     onclick="veri()">
                   <label class="form-check-label custom-control-label" for="pr1"> Si
                   </label>
                 </div>
                 <div class="custom-control custom-radio">
-                  <input class="form-check-input custom-control-input" type="radio" name="pregunta1" id="pr1-1" required
+                  <input class="form-check-input custom-control-input" type="radio" name="pregunta1" id="pr1-1" value="no" required
                     onclick="veri()">
                   <label class="form-check-label custom-control-label" for="pr1-1"> No
                   </label>
@@ -418,6 +525,13 @@
                 </table>
               </div>
             </div>
+            <div class="row" id="alertPerson" hidden>
+                <div class="col">
+                    <div class="alert alert-danger" role="alert">
+                        Favor llenar los datos antes de agregar
+                    </div>
+                </div>
+            </div>
 
 
 
@@ -428,12 +542,12 @@
                 parte de la seccion de seguridad institucional? </div>
               <div class="form-check form-check-inline">
                 <div class="custom-control custom-radio">
-                  <input class="form-check-input custom-control-input" type="radio" name="pregunta2" id="pr2" required>
+                  <input class="form-check-input custom-control-input" type="radio" name="pregunta2" id="pr2" value="si" required>
                   <label class="form-check-label custom-control-label" for="pr2"> Si
                   </label>
                 </div>
                 <div class="custom-control custom-radio">
-                  <input class="form-check-input custom-control-input" type="radio" name="pregunta2" id="pr2-1"
+                  <input class="form-check-input custom-control-input" type="radio" name="pregunta2" id="pr2-1" value="no"
                     required>
                   <label class="form-check-label custom-control-label" for="pr2-1"> No
                   </label>
@@ -446,12 +560,12 @@
               <div><i class="fas fa-circle fa-xs"></i>&nbsp; La actividad es abierta a todo publico? </div>
               <div class="form-check form-check-inline">
                 <div class="custom-control custom-radio">
-                  <input class="form-check-input custom-control-input" type="radio" name="pregunta3" id="pr3" required>
+                  <input class="form-check-input custom-control-input" type="radio" name="pregunta3" id="pr3" value="si" required>
                   <label class="form-check-label custom-control-label" for="pr3"> Si
                   </label>
                 </div>
                 <div class="custom-control custom-radio">
-                  <input class="form-check-input custom-control-input" type="radio" name="pregunta3" id="pr3-1"
+                  <input class="form-check-input custom-control-input" type="radio" name="pregunta3" id="pr3-1" value="no"
                     required>
                   <label class="form-check-label custom-control-label" for="pr3-1"> No
                   </label>
@@ -460,62 +574,11 @@
               </div>
             </div>
             <br>
-            <div class="form-row">
-              <div><i class="fas fa-circle fa-xs"></i>&nbsp; Necesita que ingrese previamente o despues de la actividad
-                alguna unidad de transporte o de servicio de alimentacion? </div>
-              <div class="form-check form-check-inline">
-                <div class="custom-control custom-radio">
-                  <input class="form-check-input custom-control-input" type="radio" name="pregunta4" id="pr4" required
-                    onclick="veriTransporte()">
-                  <label class="form-check-label custom-control-label" for="pr4"> Previamente de la actividad
-                  </label>
-                </div>
-                <div class="custom-control custom-radio">
-                  <input class="form-check-input custom-control-input" type="radio" name="pregunta4" id="pr4-1" required
-                    onclick="veriTransporte()">
-                  <label class="form-check-label custom-control-label" for="pr4-1"> Despues de la actividad
-                  </label>
-                  <div class="invalid-tooltip">Favor ingresar la respuesta</div>
-                </div>
-                <div class="custom-control custom-radio">
-                  <input class="form-check-input custom-control-input" type="radio" name="pregunta4" id="pr4-2" required
-                    onclick="veriTransporte()">
-                  <label class="form-check-label custom-control-label" for="pr4-2"> Ambas veces
-                  </label>
-                  <div class="invalid-tooltip">Favor ingresar la respuesta</div>
-                </div>
-                <div class="custom-control custom-radio">
-                  <input class="form-check-input custom-control-input" type="radio" name="pregunta4" id="pr4-3" required
-                    onclick="veriTransporte()">
-                  <label class="form-check-label custom-control-label" for="pr4-3"> No
-                  </label>
-                  <div class="invalid-tooltip">Favor ingresar la respuesta</div>
-                </div>
 
-              </div>
-            </div>
 
-            <div class="form-row">
-              <div class="form-group col" id="previo">
-                <label for="horaIn">Hora previa de ingreso</label>
-                <div class="input-group date" id="datetimepicker6" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker6" id="_horaIng"/>
-                    <div class="input-group-append" data-target="#datetimepicker6" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fas fa-clock"></i></div>
-                    </div>
-                </div>
-              </div>
-              <div class="form-group col" id="despues">
-                <label for="horaIn">Hora posterior de ingreso</label>
-                <div class="input-group date" id="datetimepicker7" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker7" id="_horaIng"/>
-                    <div class="input-group-append" data-target="#datetimepicker7" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fas fa-clock"></i></div>
-                    </div>
-                </div>
-              </div>
+{{--
+            aqi iba lo de seguridad --}}
 
-            </div>
 
             <br>
             <br>
@@ -558,6 +621,33 @@
     </div>
   </div>
 </div>
+</div>
+<div id="successfulMsg">
+    <br>
+    <br>
+    <div class="row justify-content-center">
+        <div class="col-5">
+            <div class="card text-center">
+                <div class="card-header">
+                    <div class="h4">
+                        ¡Reservación exitosa!
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Solicitud
+                        <span id="successfulNumSol"></span>
+                    </h5>
+                    <p class="card-text">Su solicitud fue registrada exitosamente, por favor espere a que el administrador la revise.</p>
+                </div>
+                <div class="card-footer text-muted">
+                    ¡Gracias!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script src="js/main.js"></script>
 
