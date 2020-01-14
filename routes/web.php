@@ -11,6 +11,10 @@
 |
 */
 
+use App\Http\Controllers\ActivityController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return redirect('/reservation');
 });
@@ -26,3 +30,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/calendar', function(){
     return view('reservation.calendar');
 });
+
+Route::put('/activities/state/{id}','ActivityController@state');
+
+Route::post('/activities/{id}/sendMail', 'ActivityController@sendMail');

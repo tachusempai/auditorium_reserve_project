@@ -6,8 +6,9 @@ use App\Activity;
 use App\Request as AppRequest;
 use App\RequestPerson;
 use App\Schedule;
-use Request;
-/* use Illuminate\Http\Request; */
+/* use Request; */
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RequestController extends Controller
 {
@@ -18,7 +19,7 @@ class RequestController extends Controller
      */
     public function index()
     {
-        $last = \DB::table('requests')->count() + 1;
+        $last = DB::table('requests')->count() + 1;
         return view('reservation.index', [
             'lastRequest' => $last
         ]);
@@ -41,15 +42,13 @@ class RequestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $input)
     {
-        $input = Request::all();
-        /* dd($input); */
+
 
         $request = new AppRequest();
         $activity = new Activity();
         $requestPerson = new RequestPerson();
-        /* $schedule = new Schedule(); */
 
         // Request
         $request->date_request = date('Y-m-d');

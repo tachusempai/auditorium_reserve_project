@@ -1,6 +1,3 @@
-@extends('layouts.app')
-
-@section('content')
 <br>
 <div class="row justify-content-center">
     <div class="col-lg-8 col-sm-12">
@@ -218,64 +215,6 @@
                 @endif
             </div>
         </div>
-        <div class="row ">
-            <div class="col d-flex justify-content-center">
-                <button class="btn btn-secondary" type="button">Volver</button>
-            </div>
-            @if ($request->state_request_id == 1)
-                <div class="col d-flex justify-content-center">
-                    <button class="btn btn-danger" type="button" onclick="javascript:responseRequest(3);">Rechazar solicitud</button>
-                </div>
-                <div class="col d-flex justify-content-center">
-                    <button class="btn btn-primary" type="button" onclick="javascript:responseRequest(2);">Aprobar solicitud</button>
-                </div>
-            @else
-                <div class="col d-flex justify-content-center">
-                    <button class="btn btn-success" type="button" onclick="javascript:sendEmail();">Correo a seguridad</button>
-                </div>
-            @endif
-        </div>
         <p class="token" id="_token" hidden> {{csrf_token()}} </p>
     </div>
 </div>
-<script>
-    function responseRequest(nState){
-        var id = $('#numRequest').text();
-        var token = $('#_token').text();
-        var data = {
-            state: nState,
-            _token: token
-        };
-
-        $.ajax({
-            type: 'PUT',
-            url: '/activities/state/'+id,
-            data: data,
-            dataType: 'json',
-            success: function (response) {
-                sendEmail();
-            }
-        });
-    }
-    function sendEmail(){
-        var id = $('#numRequest').text();
-        var token = $('#_token').text();
-        var data = {
-            _token: token
-        };
-        $.ajax({
-            type: 'POST',
-            url: '/activities/'+id+'/sendMail',
-            data: data,
-            dataType: 'json',
-            success: function (response) {
-                finish();
-            }
-        });
-
-    }
-    function finish(){
-        window.location.replace("/activities");
-    }
-</script>
-@endsection

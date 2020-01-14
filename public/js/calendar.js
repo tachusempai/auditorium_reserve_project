@@ -26,6 +26,7 @@ jQuery(document).ready(function(){
 	jQuery(function() {
 		// page is ready
 		jQuery('#calendar').fullCalendar({
+            locale: 'es',
 			themeSystem: 'bootstrap4',
 			// emphasizes business hours
 			businessHours: false,
