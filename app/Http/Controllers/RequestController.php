@@ -6,6 +6,7 @@ use App\Activity;
 use App\Request as AppRequest;
 use App\RequestPerson;
 use App\Schedule;
+use DateTime;
 /* use Request; */
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -91,8 +92,9 @@ class RequestController extends Controller
         /* dd($input['formHorario']['_horarios'][0]); */
         for ($i = 0; $i < $scheduleCount; $i++){
             $schedule = new Schedule();
-            $date = $input['formHorario']['_horarios'][$i][0];
-            $schedule->activity_date = date('Y-m-d', strtotime($date));
+            $date = DateTime::createFromFormat('d/m/Y',$input['formHorario']['_horarios'][$i][0]);
+            $schedule->activity_date = $date->format('Y-m-d');
+            dd($schedule->activity_date);
             $timeET = $input['formHorario']['_horarios'][$i][1];
             $schedule->entry_time = date('H:i:s',strtotime($timeET));
             $timeDT = $input['formHorario']['_horarios'][$i][2];

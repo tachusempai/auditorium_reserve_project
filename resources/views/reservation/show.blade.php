@@ -239,7 +239,10 @@
     </div>
 </div>
 <script>
+
+    var stateR;
     function responseRequest(nState){
+        stateR = nState;
         var id = $('#numRequest').text();
         var token = $('#_token').text();
         var data = {
@@ -258,21 +261,23 @@
         });
     }
     function sendEmail(){
-        var id = $('#numRequest').text();
-        var token = $('#_token').text();
-        var data = {
-            _token: token
-        };
-        $.ajax({
-            type: 'POST',
-            url: '/activities/'+id+'/sendMail',
-            data: data,
-            dataType: 'json',
-            success: function (response) {
-                finish();
-            }
-        });
-
+        if  (stateR == 2){
+            var id = $('#numRequest').text();
+            var token = $('#_token').text();
+            var data = {
+                _token: token
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/activities/'+id+'/sendMail',
+                data: data,
+                dataType: 'json',
+                success: function (response) {
+                    finish();
+                }
+            });
+        }
+        else finish();
     }
     function finish(){
         window.location.replace("/activities");

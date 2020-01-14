@@ -17,7 +17,7 @@ $(function () {
     $('#datetimepicker2').datetimepicker({
         format: 'LT',
         stepping: 30,
-        enabledHours: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+        enabledHours: [8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19]
     });
 });
 $(function () {
@@ -31,7 +31,7 @@ $(function () {
     $('#datetimepicker4').datetimepicker({
         format: 'LT',
         stepping: 30,
-        enabledHours: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+        enabledHours: [8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20]
     });
 });
 $(function () {

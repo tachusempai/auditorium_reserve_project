@@ -149,7 +149,24 @@ class ActivityController extends Controller
     {
         //
     }
-
+    /**
+     * Display a listing of the schedules.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function loadSchedules(){
+        $schedules = Schedule::select('schedules.activity_id','schedules.activity_date', 'schedules.entry_time', 'schedules.departure_time', 'activities.name_activity', 'activities.request_id','requests.id', 'request_people.name_person', 'request_people.last_name_person', 'request_people.office_phone')
+        ->join('activities','schedules.activity_id', '=', 'activities.id')
+        ->join('requests','activities.request_id', '=', 'requests.id')
+        ->join('request_people','requests.id', '=', 'request_people.request_id')
+        ->where('request_people.type_people_id', 1)
+        ->get();
+        /* dd($schedules); */
+        return view('reservation.calendar', [
+            'schedules' => $schedules
+        ]);
+        /* return response()->json(["response"=>"success"]); */
+    }
     public function sendMail($id){
         $request = AppRequest::select('requests.id','requests.date_request', 'requests.type_request_id', 'type_requests.description', 'state_requests.description_state', 'requests.state_request_id')
         ->join('type_requests','requests.type_request_id', '=', 'type_requests.id')

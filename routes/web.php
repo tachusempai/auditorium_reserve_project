@@ -27,10 +27,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/calendar', function(){
+/* Route::get('/calendar', function(){
     return view('reservation.calendar');
-});
+}); */
 
 Route::put('/activities/state/{id}','ActivityController@state');
 
 Route::post('/activities/{id}/sendMail', 'ActivityController@sendMail');
+Route::get('/calendar','ActivityController@loadSchedules');
