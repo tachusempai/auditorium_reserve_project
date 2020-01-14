@@ -155,13 +155,13 @@ class ActivityController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function loadSchedules(){
-        $schedules = Schedule::select('schedules.activity_id','schedules.activity_date', 'schedules.entry_time', 'schedules.departure_time', 'activities.name_activity', 'activities.request_id','requests.id', 'request_people.name_person', 'request_people.last_name_person', 'request_people.office_phone')
+        $schedules = Schedule::select('schedules.activity_id','schedules.activity_date', 'schedules.entry_time', 'schedules.departure_time', 'activities.name_activity', 'activities.request_id','requests.id', 'requests.state_request_id', 'request_people.name_person', 'request_people.last_name_person', 'request_people.office_phone')
         ->join('activities','schedules.activity_id', '=', 'activities.id')
         ->join('requests','activities.request_id', '=', 'requests.id')
         ->join('request_people','requests.id', '=', 'request_people.request_id')
         ->where('request_people.type_people_id', 1)
+        ->where('requests.state_request_id', 2)
         ->get();
-        /* dd($schedules); */
         return view('reservation.calendar', [
             'schedules' => $schedules
         ]);
