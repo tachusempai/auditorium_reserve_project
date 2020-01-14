@@ -46,8 +46,6 @@ class RequestController extends Controller
     public function store(Request $input)
     {
 
-
-        dd($input);
         $request = new AppRequest();
         $activity = new Activity();
         $requestPerson = new RequestPerson();
