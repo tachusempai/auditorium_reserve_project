@@ -616,12 +616,13 @@
           Siguiente </button>
         <button class="btn btn-danger" id="_btnSiguienteSeguridad" type="button" onClick="siguienteSeguridad()">
           Confirmar </button>
-          <p class="token" id="_token" hidden> {{csrf_token()}} </p>
+
       </div>
     </div>
   </div>
 </div>
 </div>
+<p class="token" id="_token" hidden> {{csrf_token()}} </p>
 <div id="successfulMsg">
     <br>
     <br>

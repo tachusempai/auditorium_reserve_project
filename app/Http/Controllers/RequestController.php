@@ -47,6 +47,7 @@ class RequestController extends Controller
     {
 
 
+        dd($input);
         $request = new AppRequest();
         $activity = new Activity();
         $requestPerson = new RequestPerson();
@@ -89,12 +90,10 @@ class RequestController extends Controller
         $requestPerson->save();
 
         $scheduleCount = count($input['formHorario']['_horarios']);
-        /* dd($input['formHorario']['_horarios'][0]); */
         for ($i = 0; $i < $scheduleCount; $i++){
             $schedule = new Schedule();
             $date = DateTime::createFromFormat('d/m/Y',$input['formHorario']['_horarios'][$i][0]);
             $schedule->activity_date = $date->format('Y-m-d');
-            dd($schedule->activity_date);
             $timeET = $input['formHorario']['_horarios'][$i][1];
             $schedule->entry_time = date('H:i:s',strtotime($timeET));
             $timeDT = $input['formHorario']['_horarios'][$i][2];
@@ -133,7 +132,6 @@ class RequestController extends Controller
                 $requestPerson->save();
             }
         }
-        /* return redirect('/paginadonderedirecta'); */
 
         return response()->json(["response"=>"success"]);
 
