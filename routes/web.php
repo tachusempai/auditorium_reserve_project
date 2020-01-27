@@ -34,4 +34,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::put('/activities/state/{id}','ActivityController@state');
 
 Route::post('/activities/{id}/sendMail', 'ActivityController@sendMail');
-Route::get('/calendar','ActivityController@loadSchedules');
+Route::get('/calendar','ScheduleController@loadSchedules');
+
+Route::post('/reservation/schedule', 'RequestController@validateSchedule');

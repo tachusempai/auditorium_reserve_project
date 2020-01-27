@@ -45,7 +45,8 @@ class RequestController extends Controller
      */
     public function store(Request $input)
     {
-
+        /* dd($input['formHorario']['_horarios']); */
+        $last = DB::table('requests')->count() + 1;
         $request = new AppRequest();
         $activity = new Activity();
         $requestPerson = new RequestPerson();
@@ -57,7 +58,8 @@ class RequestController extends Controller
         $request->save();
 
         // Activity
-        $activity->request_id = $input['formTipo']['numeroSolicitud'];
+        /* $activity->request_id = $input['formTipo']['numeroSolicitud']; */
+        $activity->request_id = $last;
         $activity->name_activity = $input['formActividad']['_nameActividad'];
         $activity->number_people = $input['formActividad']['_numPersonas'];
         $activity->information = $input['formHorario']['_areaExtra'];
@@ -83,7 +85,8 @@ class RequestController extends Controller
         $requestPerson->cell_phone = $input['formResponsable']['_celular'];
         $requestPerson->name_institution = $input['formResponsable']['_unidad'];
         $requestPerson->email = $input['formResponsable']['_correo'];
-        $requestPerson->request_id = $input['formTipo']['numeroSolicitud'];
+        /* $requestPerson->request_id = $input['formTipo']['numeroSolicitud'];  */
+        $requestPerson->request_id = $last;
         $requestPerson->type_people_id = 1;
         $requestPerson->save();
 
@@ -110,7 +113,8 @@ class RequestController extends Controller
             }
 
 
-            $schedule->activity_id = $input['formTipo']['numeroSolicitud'];
+            /* $schedule->activity_id = $input['formTipo']['numeroSolicitud']; */
+            $schedule->activity_id = $last;
             $schedule->save();
         }
         if ($input['formSeguridad']['_personasSeguridad'] != null){
@@ -125,13 +129,14 @@ class RequestController extends Controller
                 $requestPerson->cell_phone = 'N/A';
                 $requestPerson->name_institution ='N/A';
                 $requestPerson->email = 'N/A';
-                $requestPerson->request_id = $input['formTipo']['numeroSolicitud'];
+                /* $requestPerson->request_id = $input['formTipo']['numeroSolicitud']; */
+                $requestPerson->request_id = $last;
                 $requestPerson->type_people_id = 2;
                 $requestPerson->save();
             }
         }
 
-        return response()->json(["response"=>"success"]);
+        return response()->json(["response"=>$last]);
 
     }
 
@@ -178,5 +183,39 @@ class RequestController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function validateSchedule(Request $input){
+        //dd($input);
+        //select schedules.activity_date, schedules.entry_time, schedules.departure_time from schedules inner join activities on schedules.activity_id = activities.request_id inner join requests on activities.request_id = requests.id where requests.state_request_id = 2 and schedules.activity_date = "2020-01-29"
+
+        /* $date = "2020-01-29"; */
+        $horaIng = date('H:i:s', strtotime($input['horaIng']));
+        $horaSal = date('H:i:s', strtotime($input['horaSal']));
+        $date1 = DateTime::createFromFormat('d/m/Y',$input['fecha']);
+        $date = $date1->format('Y-m-d');
+        /* dd($date); */
+        $schedule = Schedule::select('schedules.activity_date','schedules.entry_time', 'schedules.departure_time')
+        ->join('activities', 'schedules.activity_id', '=', 'activities.request_id')
+        ->join('requests', 'activities.request_id', '=', 'requests.id')
+        ->where('requests.state_request_id', '=', 2)
+        ->where('schedules.activity_date', '=', $date)
+        ->get();
+        /* dd($schedule[0]['entry_time']); */
+        if(count($schedule) != 0){
+            for ($i = 0; $i < count($schedule); $i++){
+                if((($horaIng < $schedule[$i]['entry_time']) && ($horaSal < $schedule[$i]['entry_time'])) || (($horaIng > $schedule[$i]['departure_time']) && ($horaSal > $schedule[$i]['departure_time']))){
+                    return response()->json(["response"=>"aceptado"]);
+                }
+                else {
+                    return response()->json(["response"=>"denegado"]);
+                }
+            }
+        }
+        else{
+            return response()->json(["response"=>"aceptado"]);
+        }
+
+
     }
 }

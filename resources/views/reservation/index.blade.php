@@ -205,7 +205,6 @@
             <div class="form-row">
               <div class="form-group col">
                 <label for="name">Fecha</label>
-                {{-- <input type="date" class="form-control" id="fecha" placeholder="Fecha" required> --}}
                     <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                         <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" id="_fecha"/>
                         <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
@@ -217,42 +216,76 @@
                 </div>
               </div>
               <div class="form-group col">
-                <label for="horaIn">Hora de ingreso al auditorio</label>
-                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" id="_horaIng"/>
+                <label for="_horaIng">Hora de ingreso al auditorio</label>
+                {{-- <div class="input-group date" id="datetimepicker2" data-target-input="nearest"> --}}
+                    {{-- <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" id="_horaIng"/>
                     <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fas fa-clock"></i></div>
-                    </div>
-                </div>
+                    </div> --}}
+                    <select class="form-control custom-select" id="_horaIng" onchange="hourInitChange()">
+                        <option value="8:00 AM">8:00 AM</option>
+                        <option value="8:30 AM">8:30 AM</option>
+                        <option value="9:00 AM">9:00 AM</option>
+                        <option value="9:30 AM">9:30 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="10:30 AM">10:30 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="1:00 PM">1:00 PM</option>
+                        <option value="1:30 PM">1:30 PM</option>
+                        <option value="2:00 PM">2:00 PM</option>
+                        <option value="2:30 PM">2:30 PM</option>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="3:30 PM">3:30 PM</option>
+                        <option value="4:00 PM">4:00 PM</option>
+                        <option value="4:30 PM">4:30 PM</option>
+                        <option value="5:00 PM">5:00 PM</option>
+                        <option value="5:30 PM">5:30 PM</option>
+                        <option value="6:00 PM">6:00 PM</option>
+                        <option value="6:30 PM">6:30 PM</option>
+                        <option value="7:00 PM">7:00 PM</option>
+                        <option value="7:30 PM">7:30 PM</option>
+                        <option value="8:00 PM">8:00 PM</option>
+                    </select>
+                {{-- </div> --}}
               </div>
               <div class="form-group col">
-                <label for="horaSal">Hora de salida del auditorio</label>
-                <div class="input-group date" id="datetimepicker3" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker3" id="_horaSal"/>
+                <label for="_horaSal">Hora de salida del auditorio</label>
+                {{-- <div class="input-group date" id="datetimepicker3" data-target-input="nearest"> --}}
+                    {{-- <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker3" id="_horaSal"/>
                     <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fas fa-clock"></i></div>
-                    </div>
-                </div>
+                    </div> --}}
+                    <select class="form-control custom-select" id="_horaSal" onchange="hourFinalChange()" disabled>
+                        <option selected value="8:30 AM">8:30 AM</option>
+                    </select>
+                {{-- </div> --}}
               </div>
             </div>
             <div class="form-row">
               <div class="form-group col">
-                <label for="horaInAc">Hora inicial exacta del evento</label>
-                <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
-                     <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker4" id="_horaIni"/>
+                <label for="_horaIni">Hora inicial exacta del evento</label>
+                {{-- <div class="input-group date" id="datetimepicker4" data-target-input="nearest"> --}}
+                    {{-- <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker4" id="_horaIni"/>
                     <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fas fa-clock"></i></div>
-                    </div>
-                </div>
+                    </div> --}}
+                    <select class="form-control custom-select" id="_horaIni" disabled>
+                        <option value="8:00 AM">8:00 AM</option>
+                    </select>
+                {{-- </div> --}}
               </div>
               <div class="form-group col">
-                <label for="horaFinAc">Hora final exacta del evento</label>
-                <div class="input-group date" id="datetimepicker5" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker5" id="_horaFin"/>
+                <label for="_horaFin">Hora final exacta del evento</label>
+
+                {{-- <div class="input-group date" id="datetimepicker5" data-target-input="nearest"> --}}
+                    {{-- <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker5" id="_horaFin"/>
                     <div class="input-group-append" data-target="#datetimepicker5" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fas fa-clock"></i></div>
-                    </div>
-                </div>
+                    </div> --}}
+                    <select class="form-control custom-select" id="_horaFin" disabled>
+                        <option selected value="8:30 AM">8:30 AM</option>
+                    </select>
+                {{-- </div> --}}
               </div>
             </div>
 
@@ -315,7 +348,7 @@
             <br>
             <div class="row d-flex justify-content-center">
                 <div class="col d-flex justify-content-center">
-                    <button class="btn btn-info " type="button" id="guardarHorario" onclick="javascript:addSchedule();">Agregar horario</button>
+                    <button class="btn btn-info " type="button" id="guardarHorario" onclick="javascript:validateSchedule();">Agregar horario</button>
                 </div>
             </div>
 
@@ -327,9 +360,6 @@
                     </div>
                 </div>
             </div>
-
-
-
             <div class="form-row" id="agregaHorarios">
               <div class="table-responsive" id="tablaHorarios">
                 <table class="table tableSchedule" id="tableSchedule">
@@ -356,6 +386,13 @@
                 <div class="col">
                     <div class="alert alert-danger" role="alert">
                         Favor llenar los datos antes de agregar
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="alertScheduleSame" hidden>
+                <div class="col">
+                    <div class="alert alert-danger" role="alert">
+                        Este horario ya esta ocupado
                     </div>
                 </div>
             </div>
@@ -394,7 +431,7 @@
                   </div>
                   <div class="form-group col">
                     <label for="numPersonas">Numero de personas</label>
-                    <select class="form-control" id="_numPersonas">
+                    <select class="form-control custom-select" id="_numPersonas">
 
                     </select>
                   </div>
@@ -484,11 +521,6 @@
                 </div>
               </div>
             </div>
-
-
-
-
-
             <!-- aqui va lo de las personas -->
 
             <div class="form-row" id="agregaPersonas">
@@ -532,10 +564,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
             <br>
             <div class="form-row">
               <div><i class="fas fa-circle fa-xs"></i>&nbsp; Considera usted que necesita alguna atencion especial por
@@ -574,12 +602,6 @@
               </div>
             </div>
             <br>
-
-
-{{--
-            aqi iba lo de seguridad --}}
-
-
             <br>
             <br>
             <div class="card-footer text-muted alert alert-danger">
@@ -648,7 +670,6 @@
         </div>
     </div>
 </div>
-
 
 <script src="js/main.js"></script>
 

@@ -1,4 +1,5 @@
 $(document).ready( function () {
+    $.noConflict();
     $('#table_id').DataTable({
         language: {
             "sProcessing":     "Procesando...",

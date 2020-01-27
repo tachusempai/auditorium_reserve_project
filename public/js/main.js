@@ -42,14 +42,13 @@ function addPerson(){
 }
 
 function addSchedule(){
-    $("#alertSchedule").attr("hidden",true);
+    /* $("#alertSchedule").attr("hidden",true); */
     var _fecha = $('#_fecha').val();
     var _horaIng = $('#_horaIng').val();
     var _horaSal = $('#_horaSal').val();
     var _horaIni = $('#_horaIni').val();
     var _horaFin = $('#_horaFin').val();
     var _opcionSeguridad = $('#formHorario input[name=pregunta4]:checked').val();
-    console.log(_opcionSeguridad);
     if (_fecha != '' && _horaIng != '' && _horaSal != '' && _horaIni != '' && _horaFin != '' && _opcionSeguridad != undefined){
         if(_opcionSeguridad == '_no'){
             $('#tableSchedule').append(
@@ -401,6 +400,45 @@ function fetchFormSeguridad(){
 
 }
 
+function validateSchedule(){
+    $("#alertScheduleSame").attr("hidden",true);
+    $("#alertSchedule").attr("hidden",true);
+    var _fecha = $('#_fecha').val();
+    var _horaIng = $('#_horaIng').val();
+    var _horaSal = $('#_horaSal').val();
+    var _horaIni = $('#_horaIni').val();
+    var _horaFin = $('#_horaFin').val();
+    var _opcionSeguridad = $('#formHorario input[name=pregunta4]:checked').val();
+    var token = $('#_token').text();
+    if (_fecha != '' && _horaIng != '' && _horaSal != '' && _horaIni != '' && _horaFin != '' && _opcionSeguridad != undefined){
+        $.ajax({
+            headers: {
+                'X-CSRF-Token': token
+            },
+            url: '/reservation/schedule',
+            type: 'POST',
+            data: {
+                fecha: _fecha,
+                horaIng: _horaIng,
+                horaSal: _horaSal,
+                _token: token
+            },
+            dataType: 'json',
+            success: function (data) {
+                //alert(data);
+                console.log(data);
+                if(data['response'] == "aceptado"){
+                    addSchedule();
+                }
+                else $("#alertScheduleSame").attr("hidden",false);
+            }
+        });
+    } else{
+        $("#alertSchedule").attr("hidden",false);
+    }
+
+}
+
 function submitTotal() {
     var formTipo = fetchFormTipo();
     var formResponsable = fetchFormResponsable();
@@ -409,6 +447,9 @@ function submitTotal() {
     var formSeguridad = fetchFormSeguridad();
     var token = $('#_token').text();
     $.ajax({
+        headers: {
+            'X-CSRF-Token': token
+        },
         url: '/reservation',
         type: 'POST',
         data: {
@@ -422,13 +463,15 @@ function submitTotal() {
         dataType: 'json',
         success: function (data) {
             //alert(data);
-            successful();
+            console.log(data);
+            successful(data['response']);
         }
     });
 }
 
-function successful() {
-    var numeroSolicitud = $('#_numeroSolicitud').text();
+function successful(num) {
+    /* var numeroSolicitud = $('#_numeroSolicitud').text(); */
+    var numeroSolicitud = num;
     $('#successfulNumSol').text( numeroSolicitud);
     $('#generalForm').remove();
     $('#successfulMsg').show();
@@ -512,6 +555,116 @@ function validaSeguridad() {
     });
 }
 
+
+const convertTime12to24 = (time12h) => {
+    const [time, modifier] = time12h.split(' ');
+
+    let [hours, minutes] = time.split(':');
+
+    if (hours === '12') {
+      hours = '00';
+    }
+
+    if (modifier === 'PM') {
+      hours = parseInt(hours, 10) + 12;
+    }
+
+    return `${hours}:${minutes}`;
+  }
+
+function tConvert(timeString) {
+    /* // Check correct time format and split into components
+    time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+    if (time.length > 1) { // If time format correct
+      time = time.slice(1); // Remove full string match value
+      time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join(''); // return adjusted time or original string */
+    var hourEnd = timeString.indexOf(":");
+    var H = +timeString.substr(0, hourEnd);
+    var h = H % 12 || 12;
+    var ampm = H < 12 ? " AM" : " PM";
+    return h + timeString.substr(hourEnd, 3) + ampm;
+  }
+
+
+function hourInitChange(){
+    // borrar select
+    $('#_horaSal').empty();
+    $('#_horaSal').prop('disabled', false);
+    var _horaIng = convertTime12to24($('#_horaIng').val());
+    var _horaMax = 20;
+    var arrayHour = _horaIng.split(':');
+    var arrayNewHour = [];
+    var k = 0;
+    var opt;
+    for(i=parseInt(arrayHour[0]); i<=_horaMax; i = i + 1){
+        arrayNewHour[0] = parseInt(arrayHour[1]);
+        if(i != 12){
+            if (arrayNewHour[0] == 0){
+                /* arrayHour[1] = 30;
+                console.log(arrayHour[1]); */
+                arrayNewHour[0] = i;
+                arrayNewHour[1] = 30;
+                /* console.log(tConvert(arrayNewHour[0].toString() + ':' + arrayNewHour[1].toString())) */
+                opt = tConvert(arrayNewHour[0].toString() + ':' + arrayNewHour[1].toString());
+                $('#_horaSal').append(new Option(opt,opt));
+            }
+            else{
+                if (k == 0){
+                    i++;
+                    arrayNewHour[0] = i;
+                    arrayNewHour[1] = 30
+                    /* console.log(tConvert(arrayNewHour[0].toString() + ':' + arrayNewHour[1].toString())) */
+                    opt = tConvert(arrayNewHour[0].toString() + ':' + arrayNewHour[1].toString());
+                    $('#_horaSal').append(new Option(opt,opt));
+                } else {
+                    /* console.log(arrayHour[1]); */
+                    arrayNewHour[0] = i;
+                    arrayNewHour[1] = 30
+                    /* console.log(tConvert(arrayNewHour[0].toString() + ':' + arrayNewHour[1].toString())) */
+                    opt = tConvert(arrayNewHour[0].toString() + ':' + arrayNewHour[1].toString());
+                    $('#_horaSal').append(new Option(opt,opt));
+                }
+                k++;
+            }
+        }
+    }
+}
+function hourFinalChange(){
+    // borrar select
+    $('#_horaIni').empty();
+    $('#_horaIni').prop('disabled', false);
+    $('#_horaFin').empty();
+    $('#_horaFin').prop('disabled', false);
+    var _horaSal = convertTime12to24($('#_horaSal').val());
+    var _horaIng = convertTime12to24($('#_horaIng').val());;
+    var arrayHourIng = _horaIng.split(':');
+    var arrayHourSal = _horaSal.split(':');
+    var arrayNewHour = [];
+    arrayNewHour = arrayHourIng;
+    var k = 0;
+    var opt;
+    for(i=parseInt(arrayHourIng[0]); i<=parseInt(arrayHourSal[0]); i = i + 1){
+        if(i != 12){
+            if (parseInt(arrayNewHour[1]) == 0){
+                    arrayNewHour[0] = i;
+                    arrayNewHour[1] = '00';
+                    opt = tConvert(arrayNewHour[0].toString() + ':' + arrayNewHour[1].toString());
+                    $('#_horaIni').append(new Option(opt,opt));
+                    $('#_horaFin').append(new Option(opt,opt));
+                    arrayNewHour[1] = parseInt(arrayNewHour[1]) + 30;
+                    opt = tConvert(arrayNewHour[0].toString() + ':' + arrayNewHour[1].toString());
+                    $('#_horaIni').append(new Option(opt,opt));
+                    $('#_horaFin').append(new Option(opt,opt));
+                    arrayNewHour[1] = '00';
+
+            }
+        }
+    }
+}
 
 
 document.addEventListener("DOMContentLoaded", loaded);

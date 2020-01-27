@@ -13,7 +13,7 @@ $(function () {
         format:'DD/MM/YYYY'
     });
 });
-$(function () {
+/* $(function () {
     $('#datetimepicker2').datetimepicker({
         format: 'LT',
         stepping: 30,
@@ -40,7 +40,7 @@ $(function () {
         stepping: 30,
         enabledHours: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     });
-});
+}); */
 $(function () {
     $('#datetimepicker6').datetimepicker({
         format: 'LT',

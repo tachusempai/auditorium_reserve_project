@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Schedule;
 use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
@@ -80,5 +80,18 @@ class ScheduleController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function loadSchedules(){
+        $schedules = Schedule::select('schedules.activity_id','schedules.activity_date', 'schedules.entry_time', 'schedules.departure_time', 'activities.name_activity', 'activities.request_id','requests.id', 'requests.state_request_id', 'request_people.name_person', 'request_people.last_name_person', 'request_people.office_phone')
+        ->join('activities','schedules.activity_id', '=', 'activities.id')
+        ->join('requests','activities.request_id', '=', 'requests.id')
+        ->join('request_people','requests.id', '=', 'request_people.request_id')
+        ->where('request_people.type_people_id', 1)
+        ->where('requests.state_request_id', 2)
+        ->get();
+        return view('reservation.calendar', [
+            'schedules' => $schedules
+        ]);
+        /* return response()->json(["response"=>"success"]); */
     }
 }
